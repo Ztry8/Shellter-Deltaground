@@ -1,0 +1,8 @@
+[package]
+name = "shellter"
+version = "0.2.4"
+edition = "2021"
+
+[dependencies]
+bracket-lib = { version = "*", features = ["threaded"] }
+chrono = "0.4.31"
