@@ -1,6 +1,6 @@
 # Shellter
 ### [DeltaGround](https://github.com/Ztry8/DeltaGround/) new generation
-![screenshot](https://github.com/Ztry8/Shellter/blob/main/screenshots/1.png?raw=true)
+![screenshot](https://github.com/Ztry8/Shellter/blob/main/screenshots/1.png?raw=false)
 
 #### Shellter is a roguelike game in the style of old Unix RPG games, with a generated, large world open to exploration. Explore endless and huge dungeons! 
 
