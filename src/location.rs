@@ -1,8 +1,6 @@
 #[derive(PartialEq, Copy, Clone)]
 pub enum TileType {
     Wall,
-    DamagedWall,
-    WeakWall,
     Floor,
     Exit,
     Potion,
@@ -14,10 +12,8 @@ pub enum TileType {
     Chest,
 }
 
-const SOLID_TILES: [TileType; 4] = [
+const SOLID_TILES: [TileType; 2] = [
     TileType::Wall,
-    TileType::DamagedWall,
-    TileType::WeakWall,
     TileType::Door,
 ];
 
@@ -68,23 +64,14 @@ impl WorldLocation {
 
         let mut rng = RandomNumberGenerator::new();
         for i in 0..map.len() {
-            map[i] = match rng.roll_dice(2, 6) {
-                (1..=7) => TileType::Wall,
-                8 | 9 => TileType::DamagedWall,
-                _ => TileType::WeakWall,
-            };
+            map[i] = TileType::Wall;
         }
 
-        let colors: ((u8, u8, u8), (u8, u8, u8), (u8, u8, u8), (u8, u8, u8)) = match floor {
-            0..=5 => (SANDY_BROWN, ROSY_BROWN, GRAY100, GRAY100),
-            6..=8 => (YELLOWGREEN, YELLOW3, GREEN3, PINK),
-            _ => {
-                if rng.range(1, 101) <= 50 {
-                    (GREY100, GRAY, ORANGE_RED, TOMATO)
-                } else {
-                    (LIGHT_BLUE, ALICE_BLUE, CYAN, GREY100)
-                }
-            } 
+        let colors: ((u8, u8, u8), (u8, u8, u8), (u8, u8, u8), (u8, u8, u8)) = match rng.range(1, 11) {
+            0..=3 => (SANDY_BROWN, ROSY_BROWN, GRAY100, GRAY100),
+            4..=6 => (YELLOWGREEN, YELLOW3, GREEN3, PINK),
+            7..=9 => (GREY100, GRAY, ORANGE_RED, TOMATO),
+            _ => (LIGHT_BLUE, ALICE_BLUE, CYAN, GREY100),
         };
         engine.screen_burn_color(RGB::from_u8(colors.0.0, colors.0.1, 
             colors.0.1));
@@ -339,8 +326,6 @@ impl WorldLocation {
                 TileType::Potion => '!',
                 TileType::Floor | TileType::BearTrap => ' ',
                 TileType::Wall => '#',
-                TileType::DamagedWall => 'M',
-                TileType::WeakWall => 'W',
                 TileType::Exit => '<',
                 TileType::Coin => '$',
                 TileType::BearTrapActived => '^',

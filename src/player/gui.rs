@@ -27,7 +27,7 @@ pub fn draw_inventory(engine: &mut BTerm, player: &mut Player, wheel: i32) {
             draw_line_equip(engine, 
                 format!("Weapon: {} {}", material, weapon_type), CYAN, 2);
             draw_line_equip(engine, format!("Damage: {}", damage), WHITE, 3);
-            draw_line_equip(engine, format!("Weight: {}kg", Player::weight_by_weapon(weapon_type, material)), 
+            draw_line_equip(engine, format!("Weight: {:.1}kg", Player::weight_by_weapon(weapon_type, material)), 
                 WHITE, 4);
     } 
     
@@ -38,10 +38,10 @@ pub fn draw_inventory(engine: &mut BTerm, player: &mut Player, wheel: i32) {
         let (ss, ss2): (String, String) = match player.inventory[i].clone() {
             super::ItemType::Potion(size, color) => 
                 (format!("{} {} potion", size, Player::color_to_str(color)), 
-                format!("Weight: {}", Player::weight_by_size(size.clone()))),
+                format!("Weight: {:.1}", Player::weight_by_size(size.clone()))),
             super::ItemType::Weapon(weapon_type, material , damage) => 
                 (format!("{} {}", material, weapon_type.to_string().to_lowercase()), 
-                format!("Damage: {} Weight: {}kg", damage, 
+                format!("Damage: {} Weight: {:.1}kg", damage, 
                 Player::weight_by_weapon(weapon_type, material.clone()))),
         };
         let mut j = 0;
@@ -160,7 +160,7 @@ fn draw_right_bar(engine: &mut BTerm, player: Player) {
     draw_line_right(engine, format!("ChanceOfCritical:{}%", player.kchance), 
         CYAN1, BLACK,  2);
     
-    draw_line_right(engine, format!("Weight:{}/{}kg", player.weight, player.max_weight),
+    draw_line_right(engine, format!("Weight:{:.1}/{:.1}kg", player.weight, player.max_weight),
         WHITESMOKE, BLACK,  4);
     draw_line_right(engine, format!("Coins:{}$", player.coins), 
         GOLD, BLACK,  5);

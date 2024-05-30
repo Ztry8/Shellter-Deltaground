@@ -273,7 +273,8 @@ impl State {
                             _ => str = {
                                 if key == VirtualKeyCode::PageUp && self.wheel < 0 { 
                                     self.wheel += 1;
-                                } else if key == VirtualKeyCode::PageDown {
+                                } else if key == VirtualKeyCode::PageDown && 
+                                    self.wheel > self.player.inventory.len() as i32 * -2 {
                                         self.wheel -= 1;
                                 }
 
@@ -313,8 +314,6 @@ impl State {
                 message = match self.root_map.source[xy_idx(xy.0, xy.1, self.root_map.width)] {
                     TileType::Wall => String::from("It's wall"),
                     TileType::Door => String::from("It's door"),
-                    TileType::DamagedWall => String::from("It's damaged wall"),
-                    TileType::WeakWall => String::from("It's week wall"),
                     TileType::Exit => String::from("It's ladder to the next dungeon"),
                     TileType::Coin => String::from("It's pile of old coins"),
                     TileType::Potion => String::from("It's potion"),

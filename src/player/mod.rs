@@ -40,6 +40,7 @@ pub enum WeaponType {
     Sword,
     Axe, 
     Dagger,
+    Sabber,
 }
 
 #[derive(PartialEq, Clone, Debug)]
@@ -53,6 +54,7 @@ pub enum Size {
 pub enum Material {
     Bronze,
     Silver,
+    Bone,
 }
 
 #[derive(PartialEq, Clone, Debug)]
@@ -252,9 +254,10 @@ impl Player {
     }
 
     pub fn weight_by_weapon(weapon_type: WeaponType, material: Material) -> f32 {
-        let weight = 0.5 + match material {
-            Material::Bronze => 0.2,
-            _ => 0.0,
+        let weight = 0.3 + match material {
+            Material::Bronze => 0.4,
+            Material::Bone => 0.3,
+            _ => 0.2,
         };
 
         weight + match weapon_type {
@@ -275,7 +278,7 @@ impl Player {
                 match map.colors[xy_idx(self.pos.0, self.pos.1, map.width)] {
                     HOTPINK => {
                         self.max_health += self.max_health/50+1; 
-                        format!("You drink pink potion, +{}HP!", self.max_health/50+1)
+                        format!("You drink pink potion, +{}maxHP!", self.max_health/50+1)
                     }
                     _ => {
                         if self.weight + SMALL_POTION_WEIGHT <= self.max_weight && self.inventory.len()+1 <= 25 {
@@ -308,22 +311,30 @@ impl Player {
             TileType::Chest => {
                 let mut damage = 1;
                 let material = match RandomNumberGenerator::new().range(1, 11) {
-                    0..=8 => Material::Bronze,
+                    0..=5 => Material::Bronze,
+                    6..=7 => {
+                        damage *= 3;
+                        Material::Bone
+                    }
                     _ => {
                         damage *= 2;
                         Material::Silver
                     },
                 };
                 let weapon_type = match RandomNumberGenerator::new().range(1, 11) {
-                    0..=5 => {
+                    0..=5 => WeaponType::Dagger,
+                    6..=7 => {
                         damage *= 3;
                         WeaponType::Sword
-                    },
-                    6..=7 => {
+                    }
+                    8..=9 => {
                         damage *= 4;
                         WeaponType::Axe
                     },
-                    _ => WeaponType::Dagger,
+                    _ => {
+                        damage *= 2;
+                        WeaponType::Sabber
+                    }
                 };
                 
                 let size = match RandomNumberGenerator::new().range(1, 11) {
